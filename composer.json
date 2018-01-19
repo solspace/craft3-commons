@@ -3,9 +3,9 @@
   "description": "Common object library for Solspace projects",
   "version": "1.0.0",
   "type": "library",
+  "license": "MIT",
   "minimum-stability": "dev",
   "require": {
-    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {
