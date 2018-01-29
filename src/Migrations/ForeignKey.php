@@ -125,6 +125,14 @@ class ForeignKey
     }
 
     /**
+     * @return string
+     */
+    public function getDatabaseReferenceTableName(): string
+    {
+        return '{{%' . $this->referenceTable . '}}';
+    }
+
+    /**
      * @return string[]
      */
     public function getReferenceColumn(): string

@@ -49,6 +49,14 @@ class Table
     /**
      * @return string
      */
+    public function getDatabaseName(): string
+    {
+        return '{{%' . $this->getName() . '}}';
+    }
+
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;

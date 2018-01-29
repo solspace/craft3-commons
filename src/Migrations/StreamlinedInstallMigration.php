@@ -11,17 +11,19 @@ abstract class StreamlinedInstallMigration extends Migration
      */
     final public function safeUp()
     {
-        foreach ($this->defineTableData() as $table) {
-            $table->addField('dateCreated', $this->dateTime()->notNull()->defaultExpression('NOW()'));
-            $table->addField('dateUpdated', $this->dateTime()->notNull()->defaultExpression('NOW()'));
-            $table->addField('uid', $this->char(36)->defaultValue(0));
+        $this->beforeInstall();
 
-            $this->createTable($table->getName(), $table->getFieldArray(), $table->getOptions());
+        foreach ($this->defineTableData() as $table) {
+            $table->addField('dateCreated', $this->dateTime()->notNull());
+            $table->addField('dateUpdated', $this->dateTime()->notNull());
+            $table->addField('uid', $this->uid());
+
+            $this->createTable($table->getDatabaseName(), $table->getFieldArray(), $table->getOptions());
 
             foreach ($table->getIndexes() as $index) {
                 $this->createIndex(
                     $index->getName(),
-                    $table->getName(),
+                    $table->getDatabaseName(),
                     $index->getColumns(),
                     $index->isUnique()
                 );
@@ -32,15 +34,17 @@ abstract class StreamlinedInstallMigration extends Migration
             foreach ($table->getForeignKeys() as $foreignKey) {
                 $this->addForeignKey(
                     $foreignKey->getName(),
-                    $table->getName(),
+                    $table->getDatabaseName(),
                     $foreignKey->getColumn(),
-                    $foreignKey->getReferenceTable(),
+                    $foreignKey->getDatabaseReferenceTableName(),
                     $foreignKey->getReferenceColumn(),
                     $foreignKey->getOnDelete(),
                     $foreignKey->getOnUpdate()
                 );
             }
         }
+
+        $this->afterInstall();
     }
 
     /**
@@ -48,14 +52,18 @@ abstract class StreamlinedInstallMigration extends Migration
      */
     final public function safeDown()
     {
-        foreach ($this->defineTableData() as $table) {
+        $tables = $this->defineTableData();
+
+        foreach ($tables as $table) {
             foreach ($table->getForeignKeys() as $foreignKey) {
-                $this->dropForeignKey($foreignKey->getName(), $table->getName());
+                $this->dropForeignKey($foreignKey->getName(), $table->getDatabaseName());
             }
         }
 
-        foreach ($this->defineTableData() as $table) {
-            $this->dropTableIfExists($table->getName());
+        $tables = array_reverse($tables);
+
+        foreach ($tables as $table) {
+            $this->dropTableIfExists($table->getDatabaseName());
         }
     }
 
@@ -63,4 +71,18 @@ abstract class StreamlinedInstallMigration extends Migration
      * @return Table[]
      */
     abstract protected function defineTableData(): array;
+
+    /**
+     * Perform something before installing the tables
+     */
+    protected function beforeInstall()
+    {
+    }
+
+    /**
+     * Perform something after installing the tables
+     */
+    protected function afterInstall()
+    {
+    }
 }
