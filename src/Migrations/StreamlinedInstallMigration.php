@@ -55,6 +55,10 @@ abstract class StreamlinedInstallMigration extends Migration
         $tables = $this->defineTableData();
 
         foreach ($tables as $table) {
+            if (!\Craft::$app->db->tableExists($table->getDatabaseName())) {
+                continue;
+            }
+
             foreach ($table->getForeignKeys() as $foreignKey) {
                 $this->dropForeignKey($foreignKey->getName(), $table->getDatabaseName());
             }
@@ -62,6 +66,7 @@ abstract class StreamlinedInstallMigration extends Migration
 
         $tables = array_reverse($tables);
 
+        /** @var Table $table */
         foreach ($tables as $table) {
             $this->dropTableIfExists($table->getDatabaseName());
         }
