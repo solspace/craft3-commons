@@ -16,11 +16,19 @@ class PermissionHelper
      */
     public static function checkPermission(string $permissionName, bool $checkForNested = false): bool
     {
+        if (self::isAdmin()) {
+            return true;
+        }
+
         $user           = \Craft::$app->getUser();
         $permissionName = strtolower($permissionName);
 
         if (self::permissionsEnabled()) {
             if ($checkForNested) {
+                if (!$user->getId()) {
+                    return false;
+                }
+
                 $permissionList = \Craft::$app->userPermissions->getPermissionsByUserId($user->getId());
                 foreach ($permissionList as $permission) {
                     if (strpos($permission, $permissionName) === 0) {
@@ -32,7 +40,7 @@ class PermissionHelper
             return $user->checkPermission($permissionName);
         }
 
-        return self::isAdmin();
+        return false;
     }
 
     /**
@@ -64,14 +72,26 @@ class PermissionHelper
      */
     public static function getNestedPermissionIds(string $permissionName)
     {
+        if (self::isAdmin()) {
+            return true;
+        }
+
         $user           = \Craft::$app->getUser();
         $permissionName = strtolower($permissionName);
         $idList         = [];
 
         if (self::permissionsEnabled()) {
+            if (!$user->getId()) {
+                return [];
+            }
+
             $permissionList = \Craft::$app->userPermissions->getPermissionsByUserId($user->getId());
             foreach ($permissionList as $permission) {
                 if (strpos($permission, $permissionName) === 0) {
+                    if (strpos($permission, ':') === false) {
+                        continue;
+                    }
+
                     list($name, $id) = explode(':', $permission);
 
                     $idList[] = $id;
