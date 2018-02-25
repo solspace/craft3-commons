@@ -88,6 +88,10 @@ class PermissionHelper
             $permissionList = \Craft::$app->userPermissions->getPermissionsByUserId($user->getId());
             foreach ($permissionList as $permission) {
                 if (strpos($permission, $permissionName) === 0) {
+                    if (strpos($permission, ':') === false) {
+                        continue;
+                    }
+
                     list($name, $id) = explode(':', $permission);
 
                     $idList[] = $id;
