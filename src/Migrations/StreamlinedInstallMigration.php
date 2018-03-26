@@ -24,7 +24,7 @@ abstract class StreamlinedInstallMigration extends Migration
 
             foreach ($table->getIndexes() as $index) {
                 $this->createIndex(
-                    $table->getName() . '_' . $index->getName(),
+                    $index->getName(),
                     $table->getDatabaseName(),
                     $index->getColumns(),
                     $index->isUnique()
