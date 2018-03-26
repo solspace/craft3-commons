@@ -1,5 +1,5 @@
 {
-  "name": "Solspace Commons Library",
+  "name": "solspace/craft3-commons",
   "description": "Solspace Commons Library for Craft CMS 3 plugins",
   "version": "1.0.8",
   "type": "library",
