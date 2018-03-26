@@ -84,14 +84,15 @@ class Table
     }
 
     /**
-     * @param array $columns
-     * @param bool  $unique
+     * @param array       $columns
+     * @param bool        $unique
+     * @param string|null $prefix
      *
      * @return Table
      */
-    public function addIndex(array $columns, bool $unique = false): Table
+    public function addIndex(array $columns, bool $unique = false, string $prefix = null): Table
     {
-        $this->indexes[] = new Index($columns, $unique);
+        $this->indexes[] = new Index($columns, $unique, $prefix);
 
         return $this;
     }
