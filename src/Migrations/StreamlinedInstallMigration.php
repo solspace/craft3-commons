@@ -9,9 +9,11 @@ abstract class StreamlinedInstallMigration extends Migration
     /**
      * @inheritdoc
      */
-    final public function safeUp()
+    final public function safeUp(): bool
     {
-        $this->beforeInstall();
+        if (!$this->beforeInstall()) {
+            return false;
+        }
 
         foreach ($this->defineTableData() as $table) {
             $table->addField('dateCreated', $this->dateTime()->notNull());
@@ -44,14 +46,18 @@ abstract class StreamlinedInstallMigration extends Migration
             }
         }
 
-        $this->afterInstall();
+        return $this->afterInstall();
     }
 
     /**
      * @inheritdoc
      */
-    final public function safeDown()
+    final public function safeDown(): bool
     {
+        if (!$this->beforeUninstall()) {
+            return false;
+        }
+
         $tables = $this->defineTableData();
 
         foreach ($tables as $table) {
@@ -70,6 +76,8 @@ abstract class StreamlinedInstallMigration extends Migration
         foreach ($tables as $table) {
             $this->dropTableIfExists($table->getDatabaseName());
         }
+
+        return $this->afterUninstall();
     }
 
     /**
@@ -80,14 +88,32 @@ abstract class StreamlinedInstallMigration extends Migration
     /**
      * Perform something before installing the tables
      */
-    protected function beforeInstall()
+    protected function beforeInstall(): bool
     {
+        return true;
     }
 
     /**
      * Perform something after installing the tables
      */
-    protected function afterInstall()
+    protected function afterInstall(): bool
     {
+        return true;
+    }
+
+    /**
+     * Perform something before installing the tables
+     */
+    protected function beforeUninstall(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Perform something after installing the tables
+     */
+    protected function afterUninstall(): bool
+    {
+        return true;
     }
 }
