@@ -1,7 +1,7 @@
 {
-  "name": "solspace/craft3-commons",
-  "description": "Common object library for Solspace projects",
-  "version": "1.0.7",
+  "name": "Solspace Commons Library",
+  "description": "Solspace Commons Library for Craft CMS 3 plugins",
+  "version": "1.0.8",
   "type": "library",
   "license": "MIT",
   "minimum-stability": "dev",
