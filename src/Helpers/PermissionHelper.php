@@ -144,9 +144,7 @@ class PermissionHelper
      */
     private static function permissionsEnabled(): bool
     {
-        $edition = \Craft::$app->getEdition();
-
-        return \in_array($edition, [\Craft::Pro, \Craft::Client], true);
+        return \Craft::Pro === \Craft::$app->getEdition();
     }
 }
 
