@@ -66,7 +66,9 @@ abstract class StreamlinedInstallMigration extends Migration
             }
 
             foreach ($table->getForeignKeys() as $foreignKey) {
-                $this->dropForeignKey($foreignKey->getName(), $table->getDatabaseName());
+                try {
+                    $this->dropForeignKey($foreignKey->getName(), $table->getDatabaseName());
+                } catch (\Exception $e) {}
             }
         }
 
