@@ -5,8 +5,9 @@ namespace Solspace\Commons\Loggers;
 use craft\helpers\StringHelper;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
-class FileLogger
+class FileLogger implements LoggerInterface
 {
     /** @var Logger */
     private $logger;
@@ -128,5 +129,38 @@ class FileLogger
     public function critical($message, array $context = []): bool
     {
         return $this->logger->critical($message, $context);
+    }
+
+    /**
+     * @param string $message
+     * @param array  $context
+     *
+     * @return bool
+     */
+    public function emergency($message, array $context = []): bool
+    {
+        return $this->logger->emergency($message, $context);
+    }
+
+    /**
+     * @param string $message
+     * @param array  $context
+     *
+     * @return bool
+     */
+    public function alert($message, array $context = []): bool
+    {
+        return $this->logger->alert($message, $context);
+    }
+
+    /**
+     * @param string $message
+     * @param array  $context
+     *
+     * @return bool
+     */
+    public function notice($message, array $context = []): bool
+    {
+        return $this->logger->notice($message, $context);
     }
 }
