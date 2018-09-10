@@ -2,7 +2,6 @@
 
 namespace Solspace\Commons\Helpers;
 
-
 use PHPUnit\Framework\TestCase;
 
 class ComparisonHelperTest extends TestCase
