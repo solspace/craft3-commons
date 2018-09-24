@@ -80,4 +80,30 @@ class StringHelper
 
         return implode($delimiter, $camelized);
     }
+
+    /**
+     * Walk through the array and create an HTML tag attribute string
+     *
+     * @param array $array
+     *
+     * @return string
+     */
+    public static function compileAttributeStringFromArray(array $array): string
+    {
+        $attributeString = '';
+
+        foreach ($array as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+
+            if (\is_bool($value) && $value) {
+                $attributeString .= "$key ";
+            } else if (!\is_bool($value)) {
+                $attributeString .= "$key=\"$value\" ";
+            }
+        }
+
+        return $attributeString ? ' ' . $attributeString : '';
+    }
 }
