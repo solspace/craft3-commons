@@ -23,6 +23,9 @@ class ComparisonHelperTest extends TestCase
             ['some@*.com', 'some@gmail.com', true],
             ['some@*.com', 'some@hotmail.com', true],
             ['some@*.com', 'some@gmail.ru', false],
+            ['[some@*.com', '[some@gmail.com', true],
+            ['[some@*.com', 'some@gmail.com', true],
+            ['(so$^me@*.com', 'some@gmail.com', true],
         ];
     }
 
