@@ -12,23 +12,35 @@ class ComparisonHelper
      */
     public static function stringContainsWildcardKeyword(string $pattern, string $string): bool
     {
-        $transforms = array(
-            '\*'    => '.*',
-            '\?'    => '.',
-            '\['    => '',
-            '\]'    => '',
-            '\('    => '',
-            '\)'    => '',
-            '\$'    => '',
-            '\^'    => '',
-            '\.'    => '\.',
-            '\\'    => '\\\\'
-        );
-
-        $pattern = '#\b'
-            . strtr(preg_quote($pattern, '#'), $transforms)
-            . '\b#i';
+        $pattern = '#\b' . self::wildcardToRegex($pattern) . '\b#i';
 
         return (bool) preg_match($pattern, $string);
+    }
+
+    /**
+     * @param string $wildcardPattern
+     * @param string $string
+     *
+     * @return bool
+     */
+    public static function stringMatchesWildcard(string $wildcardPattern, string $string): bool
+    {
+        $pattern = '#^' . self::wildcardToRegex($wildcardPattern). '$#i';
+
+        return (bool) preg_match($pattern, $string);
+    }
+
+    /**
+     * @param string $wildcardPattern
+     * @param string $delimiter
+     *
+     * @return string
+     */
+    private static function wildcardToRegex(string $wildcardPattern, string $delimiter = '/'): string
+    {
+        $converted = preg_quote($wildcardPattern, $delimiter);
+        $converted = str_replace('\*', '.*', $converted);
+
+        return $converted;
     }
 }
