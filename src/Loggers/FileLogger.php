@@ -7,6 +7,12 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class FileLogger
+ *
+ * @package Solspace\Commons\Loggers
+ * @deprecated Use Solspace\Commons\Loggers\LoggerFactory to create loggers
+ */
 class FileLogger implements LoggerInterface
 {
     /** @var Logger */

@@ -41,4 +41,26 @@ class ColorHelper
 
         return ($yiq >= 128) ? 'black' : 'white';
     }
+
+    /**
+     * Generates an RGB color based on $id int or hex string
+     *
+     * @param int|string $id
+     *
+     * @return array
+     */
+    public static function getRGBColor($id): array
+    {
+        if (strpos($id, '#') === 0) {
+            $hash = substr($id, 1, 6);
+        } else {
+            $hash = md5($id); // modify 'color' to get a different palette
+        }
+
+        return [
+            hexdec(substr($hash, 0, 2)), // r
+            hexdec(substr($hash, 2, 2)), // g
+            hexdec(substr($hash, 4, 2)), // b
+        ];
+    }
 }
