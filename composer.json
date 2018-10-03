@@ -4,7 +4,6 @@
   "version": "1.0.16",
   "type": "library",
   "license": "MIT",
-  "minimum-stability": "dev",
   "require": {
     "monolog/monolog": "^1.23.0"
   },
