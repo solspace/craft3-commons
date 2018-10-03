@@ -64,7 +64,7 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
             $targetLine = 1;
         }
 
-        $this->file->seek($targetLine - 1);
+        $this->file->seek($targetLine);
         while (!$this->file->eof()) {
             $line = $this->getDefaultParser()->parse($this->file->current());
             if ($line) {
