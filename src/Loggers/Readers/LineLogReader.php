@@ -79,16 +79,14 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
             $line = $this->getDefaultParser()->parse($this->file->current());
             if ($line) {
                 $lines[] = $line;
-                $currentKey--;
             }
-            $this->file->rewind();
+            $currentKey--;
+            $this->file->seek($currentKey);
 
             if (\count($lines) >= $numberOfLines) {
                 break;
             }
         }
-
-        $lines = array_reverse($lines);
 
         return $lines;
     }
