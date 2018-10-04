@@ -25,6 +25,13 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
     {
         parent::__construct($defaultPatternPattern);
 
+        if (!file_exists($filePath)) {
+            $this->file      = null;
+            $this->lineCount = 0;
+
+            return;
+        }
+
         $this->file = new \SplFileObject($filePath, 'r');
 
         $i = -1;
@@ -57,6 +64,10 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
      */
     public function getLastLines(int $numberOfLines = self::DEFAULT_NUMBER_OF_LINES): array
     {
+        if (null === $this->file) {
+            return [];
+        }
+
         $targetLine = $this->lineCount - $numberOfLines;
         $lines      = [];
 
@@ -85,7 +96,9 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
      */
     public function rewind()
     {
-        $this->file->rewind();
+        if (null !== $this->file) {
+            $this->file->rewind();
+        }
     }
 
     /**
@@ -93,7 +106,9 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
      */
     public function next()
     {
-        $this->file->next();
+        if (null !== $this->file) {
+            $this->file->next();
+        }
     }
 
     /**
@@ -101,7 +116,11 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
      */
     public function current()
     {
-        return $this->parser->parse($this->file->current());
+        if (null !== $this->file) {
+            return $this->parser->parse($this->file->current());
+        }
+
+        return null;
     }
 
     /**
@@ -109,7 +128,11 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
      */
     public function key()
     {
-        return $this->file->key();
+        if (null !== $this->file) {
+            return $this->file->key();
+        }
+
+        return null;
     }
 
     /**
@@ -117,7 +140,11 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
      */
     public function valid()
     {
-        return $this->file->valid();
+        if (null !== $this->file) {
+            return $this->file->valid();
+        }
+
+        return false;
     }
 
     /**
