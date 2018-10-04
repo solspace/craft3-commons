@@ -33,12 +33,16 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
         }
 
         $this->file = new \SplFileObject($filePath, 'r');
+        $this->file->setFlags(\SplFileObject::SKIP_EMPTY | \SplFileObject::DROP_NEW_LINE);
 
-        $i = -1;
+        $i = 0;
         while (!$this->file->eof()) {
-            $this->file->current();
+            $line = $this->file->current();
+            if (!empty($line)) {
+                $i++;
+            }
+
             $this->file->next();
-            $i++;
         }
 
         $this->lineCount = $i;
@@ -64,27 +68,25 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
      */
     public function getLastLines(int $numberOfLines = self::DEFAULT_NUMBER_OF_LINES): array
     {
+        $lines = [];
         if (null === $this->file) {
-            return [];
+            return $lines;
         }
 
-        $targetLine = $this->lineCount - $numberOfLines;
-        $lines      = [];
-
-        if ($targetLine <= 1) {
-            $targetLine = 1;
-        }
-
-        $this->file->seek($targetLine);
-        while (!$this->file->eof()) {
+        $this->file->seek($this->lineCount);
+        $currentKey = $this->file->key();
+        while ($currentKey >= 0) {
             $line = $this->getDefaultParser()->parse($this->file->current());
             if ($line) {
                 $lines[] = $line;
+                $currentKey--;
             }
-            $this->file->next();
-        }
+            $this->file->rewind();
 
-        $this->file->rewind();
+            if (\count($lines) >= $numberOfLines) {
+                break;
+            }
+        }
 
         $lines = array_reverse($lines);
 

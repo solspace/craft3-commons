@@ -1,0 +1,4 @@
+[2018-10-04 01:05:55] Some Category.ERROR: There has been an error {"context": "value"} []
+[2018-10-04 01:05:55] Other Category.CRITICAL: Some error message [] []
+[2018-10-04 01:05:59] Third.NOTICE: An error message went here [] []
+[2018-10-04 01:05:59] Third.INFO: An error message went there [] []
