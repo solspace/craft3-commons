@@ -80,8 +80,10 @@ class LineLogReader extends AbstractLogReader implements \Iterator, \Countable
             if ($line) {
                 $lines[] = $line;
             }
-            $currentKey--;
-            $this->file->seek($currentKey);
+
+            if (--$currentKey >= 0) {
+                $this->file->seek($currentKey);
+            }
 
             if (\count($lines) >= $numberOfLines) {
                 break;

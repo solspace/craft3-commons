@@ -39,6 +39,11 @@ class LineLogReaderTest extends TestCase
         $this->assertCount(3, $this->logReader->getLastLines(3));
     }
 
+    public function testAskingMoreLinesReturnsMaximum()
+    {
+        $this->assertCount(5, $this->logReader->getLastLines(20));
+    }
+
     public function testDefaultParser()
     {
         list($lineA, $lineB, $lineC, $lineD) = $this->logReader->getLastLines(4);
