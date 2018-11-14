@@ -93,11 +93,7 @@ class StringHelper
         $attributeString = '';
 
         foreach ($array as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
-
-            if (\is_bool($value) && $value) {
+            if (null === $value || (\is_bool($value) && $value)) {
                 $attributeString .= "$key ";
             } else if (!\is_bool($value)) {
                 $attributeString .= "$key=\"$value\" ";
