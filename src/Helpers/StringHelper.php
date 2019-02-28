@@ -102,4 +102,19 @@ class StringHelper
 
         return $attributeString ? ' ' . $attributeString : '';
     }
+
+    /**
+     * Takes any items separated by a whitespace or any of the following `|,;` in a string
+     * And returns an array of the items
+     *
+     * @param string $string
+     *
+     * @return array
+     */
+    public static function extractSeparatedValues(string $string): array
+    {
+        $string = preg_replace('/[\s|,;]+/', '<|_|_|>', $string);
+
+        return explode('<|_|_|>', $string);
+    }
 }

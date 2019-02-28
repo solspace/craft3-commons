@@ -54,4 +54,14 @@ class StringHelperTest extends TestCase
         );
         $this->assertEquals(' string="some string" number="23" data-bool ', $result);
     }
+
+    public function testSeparatesItems()
+    {
+        $string = "test best\nchest,rest;crest\n\neasiest     schmest|nest";
+
+        $this->assertSame(
+            ['test', 'best', 'chest', 'rest', 'crest', 'easiest', 'schmest', 'nest'],
+            StringHelper::extractSeparatedValues($string)
+        );
+    }
 }
