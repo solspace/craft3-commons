@@ -16,6 +16,10 @@ abstract class StreamlinedInstallMigration extends Migration
         }
 
         foreach ($this->defineTableData() as $table) {
+            if ($this->db->tableExists($table->getDatabaseName())) {
+                continue;
+            }
+
             $table->addField('dateCreated', $this->dateTime()->notNull());
             $table->addField('dateUpdated', $this->dateTime()->notNull());
             $table->addField('uid', $this->uid());
@@ -34,15 +38,19 @@ abstract class StreamlinedInstallMigration extends Migration
 
         foreach ($this->defineTableData() as $table) {
             foreach ($table->getForeignKeys() as $foreignKey) {
-                $this->addForeignKey(
-                    $foreignKey->getName(),
-                    $table->getDatabaseName(),
-                    $foreignKey->getColumn(),
-                    $foreignKey->getDatabaseReferenceTableName(),
-                    $foreignKey->getReferenceColumn(),
-                    $foreignKey->getOnDelete(),
-                    $foreignKey->getOnUpdate()
-                );
+                try {
+                    $this->addForeignKey(
+                        $foreignKey->getName(),
+                        $table->getDatabaseName(),
+                        $foreignKey->getColumn(),
+                        $foreignKey->getDatabaseReferenceTableName(),
+                        $foreignKey->getReferenceColumn(),
+                        $foreignKey->getOnDelete(),
+                        $foreignKey->getOnUpdate()
+                    );
+                } catch (\Exception $e) {
+                    \Craft::warning($e->getMessage());
+                }
             }
         }
 
@@ -58,17 +66,23 @@ abstract class StreamlinedInstallMigration extends Migration
             return false;
         }
 
+        if ($this instanceof KeepTablesAfterUninstallInterface) {
+            return true;
+        }
+
         $tables = $this->defineTableData();
 
         foreach ($tables as $table) {
-            if (!\Craft::$app->db->tableExists($table->getDatabaseName())) {
+            if (!$this->db->tableExists($table->getDatabaseName())) {
                 continue;
             }
 
             foreach ($table->getForeignKeys() as $foreignKey) {
                 try {
                     $this->dropForeignKey($foreignKey->getName(), $table->getDatabaseName());
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                    \Craft::warning($e->getMessage());
+                }
             }
         }
 
