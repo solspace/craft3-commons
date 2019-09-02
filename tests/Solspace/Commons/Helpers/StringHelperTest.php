@@ -57,7 +57,7 @@ class StringHelperTest extends TestCase
 
     public function testSeparatesItems()
     {
-        $string = "test best\nchest,rest;crest\n\neasiest     schmest|nest";
+        $string = "test best\nchest,rest;rest;crest\n\neasiest     schmest|nest\n";
 
         $this->assertSame(
             ['test', 'best', 'chest', 'rest', 'crest', 'easiest', 'schmest', 'nest'],

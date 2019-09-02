@@ -115,6 +115,11 @@ class StringHelper
     {
         $string = preg_replace('/[\s|,;]+/', '<|_|_|>', $string);
 
-        return explode('<|_|_|>', $string);
+        $items = explode('<|_|_|>', $string);
+        $items = array_filter($items);
+        $items = array_unique($items);
+        $items = array_values($items);
+
+        return $items;
     }
 }

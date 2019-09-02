@@ -15,7 +15,7 @@ abstract class SerializableActiveRecord extends ActiveRecord
 
         foreach ($this->getSerializableFields() as $fieldName) {
             if (!empty($this->$fieldName)) {
-                $this->$fieldName = json_decode($this->$fieldName, true);
+                $this->$fieldName = \GuzzleHttp\json_decode($this->$fieldName, true);
             }
         }
     }
