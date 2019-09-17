@@ -122,4 +122,28 @@ class StringHelper
 
         return $items;
     }
+
+    /**
+     * @param string       $glue
+     * @param array|string $data
+     *
+     * @return string
+     */
+    public static function implodeRecursively($glue, $data): string
+    {
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        $pieces = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $pieces[] = self::implodeRecursively($glue, $item);
+            } else {
+                $pieces[] = $item;
+            }
+        }
+
+        return implode($glue, $pieces);
+    }
 }

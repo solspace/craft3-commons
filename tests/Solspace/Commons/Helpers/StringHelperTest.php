@@ -64,4 +64,28 @@ class StringHelperTest extends TestCase
             StringHelper::extractSeparatedValues($string)
         );
     }
+
+    public function recursiveImplodeDataProvider()
+    {
+        return [
+            ['|', ['a', 2, 'test'], 'a|2|test'],
+            [', ', ['a', 2, ['test', 'asd']], 'a, 2, test, asd'],
+            [', ', [['a', 'best'], 2, ['test', 'asd']], 'a, best, 2, test, asd'],
+            [',', 'test', 'test'],
+        ];
+    }
+
+    /**
+     * @param string $glue
+     * @param array  $input
+     * @param string $expectedOutput
+     *
+     * @dataProvider recursiveImplodeDataProvider
+     */
+    public function testImplodeRecursively($glue, $input, $expectedOutput)
+    {
+        $output = StringHelper::implodeRecursively($glue, $input);
+
+        $this->assertSame($expectedOutput, $output);
+    }
 }
