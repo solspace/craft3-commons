@@ -1,11 +1,11 @@
 {
   "name": "solspace/craft3-commons",
   "description": "Solspace Commons Library for Craft CMS 3 plugins",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "type": "library",
   "license": "MIT",
   "require": {
-    "monolog/monolog": "^1.23.0"
+    "monolog/monolog": "^1.23.0|^2.0"
   },
   "autoload": {
     "psr-4": {
