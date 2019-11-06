@@ -38,7 +38,7 @@ class LogLine
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|bool
      */
     public function getDate()
     {
