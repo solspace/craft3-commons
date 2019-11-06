@@ -40,7 +40,7 @@ class LogLine
     /**
      * @return \DateTime
      */
-    public function getDate(): \DateTime
+    public function getDate()
     {
         return $this->date;
     }
