@@ -29,7 +29,7 @@ class LogLine
      */
     public function __construct(array $data)
     {
-        $this->date    = \DateTime::createFromFormat('Y-m-d H:i:s', $data['date']);
+        $this->date    = new \DateTime($data['date']);
         $this->logger  = $data['logger'];
         $this->level   = $data['level'];
         $this->message = $data['message'];
