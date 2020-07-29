@@ -6,10 +6,10 @@ use Solspace\Commons\Exceptions\Database\DatabaseException;
 
 class ForeignKey
 {
-    const CASCADE     = 'CASCADE';
-    const UPDATE      = 'UPDATE';
-    const RESTRICT    = 'RESTRICT';
-    const SET_NULL    = 'SET NULL';
+    const CASCADE = 'CASCADE';
+    const UPDATE = 'UPDATE';
+    const RESTRICT = 'RESTRICT';
+    const SET_NULL = 'SET NULL';
     const SET_DEFAULT = 'SET DEFAULT';
 
     /** @var array */
@@ -43,6 +43,7 @@ class ForeignKey
      * @param string $handler
      *
      * @return string|null
+     *
      * @throws DatabaseException
      */
     private static function getHandler(string $handler = null)
@@ -52,13 +53,13 @@ class ForeignKey
         }
 
         if (!\in_array($handler, self::$handlers, true)) {
-            throw new DatabaseException(
-                sprintf(
-                    'Cannot set "%s" as onDelete or onUpdate. Use one of these instead: "%s"',
-                    $handler,
-                    implode('", "', self::$handlers)
-                )
+            $message = sprintf(
+                'Cannot set "%s" as onDelete or onUpdate. Use one of these instead: "%s"',
+                $handler,
+                implode('", "', self::$handlers)
             );
+
+            throw new DatabaseException($message);
         }
 
         return $handler;
@@ -66,13 +67,6 @@ class ForeignKey
 
     /**
      * ForeignKey constructor.
-     *
-     * @param Table       $table
-     * @param string      $column
-     * @param string      $referenceTable
-     * @param string      $referenceColumn
-     * @param null|string $onDelete
-     * @param null|string $onUpdate
      *
      * @throws DatabaseException
      */
@@ -84,28 +78,22 @@ class ForeignKey
         string $onDelete = null,
         string $onUpdate = null
     ) {
-        $this->table           = $table;
-        $this->column          = $column;
-        $this->referenceTable  = $referenceTable;
+        $this->table = $table;
+        $this->column = $column;
+        $this->referenceTable = $referenceTable;
         $this->referenceColumn = $referenceColumn;
-        $this->onDelete        = self::getHandler($onDelete);
-        $this->onUpdate        = self::getHandler($onUpdate);
+        $this->onDelete = self::getHandler($onDelete);
+        $this->onUpdate = self::getHandler($onUpdate);
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->getName();
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
-        return $this->table . '_' . $this->column . '_fk';
+        return $this->table.'_'.$this->column.'_fk';
     }
 
     /**
@@ -116,20 +104,14 @@ class ForeignKey
         return $this->column;
     }
 
-    /**
-     * @return string
-     */
     public function getReferenceTable(): string
     {
         return $this->referenceTable;
     }
 
-    /**
-     * @return string
-     */
     public function getDatabaseReferenceTableName(): string
     {
-        return '{{%' . $this->referenceTable . '}}';
+        return '{{%'.$this->referenceTable.'}}';
     }
 
     /**
@@ -141,7 +123,7 @@ class ForeignKey
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getOnDelete()
     {
@@ -149,7 +131,7 @@ class ForeignKey
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getOnUpdate()
     {

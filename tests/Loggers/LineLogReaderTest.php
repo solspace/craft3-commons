@@ -8,15 +8,12 @@ use Solspace\Commons\Loggers\Readers\LineLogReader;
 
 class LineLogReaderTest extends TestCase
 {
-    private $logPath = __DIR__ . '/test.log';
+    private $logPath = __DIR__.'/test.log';
 
     /** @var LineLogReader */
     private $logReader;
 
-    /**
-     * @inheritDoc
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logReader = new LineLogReader($this->logPath);
     }
@@ -48,30 +45,30 @@ class LineLogReaderTest extends TestCase
     {
         list($lineA, $lineB, $lineC, $lineD) = $this->logReader->getLastLines(4);
         $mockA = new LogLine([
-            'date'    => '2018-10-04 05:22:11',
-            'logger'  => 'Third',
-            'level'   => 'INFO',
+            'date' => '2018-10-04 05:22:11',
+            'logger' => 'Third',
+            'level' => 'INFO',
             'message' => 'An error message went there [] []',
         ]);
 
         $mockB = new LogLine([
-            'date'    => '2018-08-14 11:05:59',
-            'logger'  => 'Third',
-            'level'   => 'NOTICE',
+            'date' => '2018-08-14 11:05:59',
+            'logger' => 'Third',
+            'level' => 'NOTICE',
             'message' => 'An error message went here [] []',
         ]);
 
         $mockC = new LogLine([
-            'date'    => '2018-07-12 18:34:01',
-            'logger'  => 'Other Category',
-            'level'   => 'CRITICAL',
+            'date' => '2018-07-12 18:34:01',
+            'logger' => 'Other Category',
+            'level' => 'CRITICAL',
             'message' => 'Some error message [] []',
         ]);
 
         $mockD = new LogLine([
-            'date'    => '2018-02-22 22:42:32',
-            'logger'  => 'Some Category',
-            'level'   => 'ERROR',
+            'date' => '2018-02-22 22:42:32',
+            'logger' => 'Some Category',
+            'level' => 'ERROR',
             'message' => 'There has been an error {"context": "value"} []',
         ]);
 

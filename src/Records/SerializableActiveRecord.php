@@ -4,6 +4,11 @@ namespace Solspace\Commons\Records;
 
 use craft\db\ActiveRecord;
 
+/**
+ * Class SerializableActiveRecord
+ *
+ * @deprecated Completely useless since Craft 3.4 changes
+ */
 abstract class SerializableActiveRecord extends ActiveRecord
 {
     /**
@@ -15,7 +20,9 @@ abstract class SerializableActiveRecord extends ActiveRecord
 
         foreach ($this->getSerializableFields() as $fieldName) {
             if (!empty($this->$fieldName)) {
-                $this->$fieldName = \GuzzleHttp\json_decode($this->$fieldName, true);
+                $decodedValue = \GuzzleHttp\json_decode($this->$fieldName, true);
+
+                $this->$fieldName = $decodedValue;
             }
         }
     }

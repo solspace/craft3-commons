@@ -21,42 +21,34 @@ class Table
     /** @var ForeignKey[] */
     private $foreignKeys;
 
+    /** @var PrimaryKey[] */
+    private $primaryKeys;
+
     /**
      * Table constructor.
-     *
-     * @param string      $name
-     * @param string|null $options
      */
     public function __construct(
         string $name,
         string $options = null
     ) {
-        $this->name           = $name;
-        $this->options        = $options;
-        $this->fields         = [];
-        $this->indexes        = [];
-        $this->foreignKeys    = [];
+        $this->name = $name;
+        $this->options = $options;
+        $this->fields = [];
+        $this->indexes = [];
+        $this->foreignKeys = [];
+        $this->primaryKeys = [];
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->getName();
     }
 
-    /**
-     * @return string
-     */
     public function getDatabaseName(): string
     {
-        return '{{%' . $this->getName() . '}}';
+        return '{{%'.$this->getName().'}}';
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -70,49 +62,34 @@ class Table
         return $this->options;
     }
 
-    /**
-     * @param string              $name
-     * @param ColumnSchemaBuilder $definition
-     *
-     * @return Table
-     */
-    public function addField(string $name, ColumnSchemaBuilder $definition): Table
+    public function addPrimaryKey(array $columns): self
+    {
+        $this->primaryKeys[] = new PrimaryKey($columns);
+
+        return $this;
+    }
+
+    public function addField(string $name, ColumnSchemaBuilder $definition): self
     {
         $this->fields[] = new Field($name, $definition);
 
         return $this;
     }
 
-    /**
-     * @param array       $columns
-     * @param bool        $unique
-     * @param string|null $prefix
-     *
-     * @return Table
-     */
-    public function addIndex(array $columns, bool $unique = false, string $prefix = null): Table
+    public function addIndex(array $columns, bool $unique = false, string $prefix = null): self
     {
         $this->indexes[] = new Index($columns, $unique, $prefix);
 
         return $this;
     }
 
-    /**
-     * @param string      $column
-     * @param string      $refTable
-     * @param string      $refColumn
-     * @param string|null $onDelete
-     * @param string|null $onUpdate
-     *
-     * @return Table
-     */
     public function addForeignKey(
         string $column,
         string $refTable,
         string $refColumn,
         string $onDelete = null,
         string $onUpdate = null
-    ): Table {
+    ): self {
         $this->foreignKeys[] = new ForeignKey(
             $this,
             $column,
@@ -153,5 +130,13 @@ class Table
     public function getForeignKeys(): array
     {
         return $this->foreignKeys;
+    }
+
+    /**
+     * @return PrimaryKey[]
+     */
+    public function getPrimaryKeys(): array
+    {
+        return $this->primaryKeys;
     }
 }

@@ -6,9 +6,6 @@ use craft\db\Migration;
 
 abstract class StreamlinedInstallMigration extends Migration
 {
-    /**
-     * @inheritdoc
-     */
     final public function safeUp(): bool
     {
         if (!$this->beforeInstall()) {
@@ -28,11 +25,15 @@ abstract class StreamlinedInstallMigration extends Migration
 
             foreach ($table->getIndexes() as $index) {
                 $this->createIndex(
-                    $table->getName() . '_' . $index->getName(),
+                    $table->getName().'_'.$index->getName(),
                     $table->getDatabaseName(),
                     $index->getColumns(),
                     $index->isUnique()
                 );
+            }
+
+            foreach ($table->getPrimaryKeys() as $primaryKey) {
+                $this->addPrimaryKey(null, $table->getName(), $primaryKey->getColumns());
             }
         }
 
@@ -57,9 +58,6 @@ abstract class StreamlinedInstallMigration extends Migration
         return $this->afterInstall();
     }
 
-    /**
-     * @inheritdoc
-     */
     final public function safeDown(): bool
     {
         if (!$this->beforeUninstall()) {
@@ -102,7 +100,7 @@ abstract class StreamlinedInstallMigration extends Migration
     abstract protected function defineTableData(): array;
 
     /**
-     * Perform something before installing the tables
+     * Perform something before installing the tables.
      */
     protected function beforeInstall(): bool
     {
@@ -110,7 +108,7 @@ abstract class StreamlinedInstallMigration extends Migration
     }
 
     /**
-     * Perform something after installing the tables
+     * Perform something after installing the tables.
      */
     protected function afterInstall(): bool
     {
@@ -118,7 +116,7 @@ abstract class StreamlinedInstallMigration extends Migration
     }
 
     /**
-     * Perform something before installing the tables
+     * Perform something before uninstalling the tables.
      */
     protected function beforeUninstall(): bool
     {
@@ -126,7 +124,7 @@ abstract class StreamlinedInstallMigration extends Migration
     }
 
     /**
-     * Perform something after installing the tables
+     * Perform something after uninstalling the tables.
      */
     protected function afterUninstall(): bool
     {
