@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: gustavs
  * Date: 26/02/2018
- * Time: 12:08
+ * Time: 12:08.
  */
 
 namespace Solspace\Commons\Configurations;
@@ -14,7 +14,7 @@ abstract class BaseConfiguration
 {
     /**
      * BaseConfiguration constructor.
-     * Passing an array config populates all of the configuration values for a given configuration
+     * Passing an array config populates all of the configuration values for a given configuration.
      *
      * @param array $config
      *
@@ -27,43 +27,32 @@ abstract class BaseConfiguration
             return;
         }
 
+        $reflection = new \ReflectionClass($this);
+        $properties = $reflection->getProperties(
+            \ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED
+        );
+
+        $availableProperties = [];
+        foreach ($properties as $property) {
+            $availableProperties[] = $property->getName();
+        }
+
         foreach ($config as $key => $value) {
-            if (property_exists(\get_class($this), $key)) {
+            if (property_exists(static::class, $key)) {
                 $this->$key = $value;
             } else {
-                $reflection = new \ReflectionClass($this);
-                $properties = $reflection->getProperties(
-                    \ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED
-                );
-
-                $availableProperties = [];
-                foreach ($properties as $property) {
-                    $availableProperties[] = $property->getName();
-                }
-
-                throw new ConfigurationException(
-                    sprintf(
-                        'Configuration property "%s" does not exist. Available properties are: "%s"',
-                        $key,
-                        implode(', ', $availableProperties)
-                    )
-                );
+                throw new ConfigurationException(sprintf('Configuration property "%s" does not exist. Available properties are: "%s"', $key, implode(', ', $availableProperties)));
             }
         }
     }
 
-    /**
-     * @return string
-     */
-    public function __toString():string
+    public function __toString(): string
     {
         return $this->getConfigHash();
     }
 
     /**
-     * Returns the SHA1 hash of the serialized object
-     *
-     * @return string
+     * Returns the SHA1 hash of the serialized object.
      */
     public function getConfigHash(): string
     {
@@ -72,7 +61,6 @@ abstract class BaseConfiguration
 
     /**
      * @param mixed $value
-     * @param bool  $nullable
      *
      * @return int|null
      */
@@ -87,7 +75,6 @@ abstract class BaseConfiguration
 
     /**
      * @param mixed $value
-     * @param bool  $nullable
      *
      * @return string|null
      */
@@ -102,7 +89,6 @@ abstract class BaseConfiguration
 
     /**
      * @param mixed $value
-     * @param bool  $nullable
      *
      * @return bool|null
      */
@@ -117,7 +103,6 @@ abstract class BaseConfiguration
 
     /**
      * @param mixed $value
-     * @param bool  $nullable
      *
      * @return array|null
      */

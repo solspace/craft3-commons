@@ -1,11 +1,12 @@
 <?php
 /**
- * Freeform for Craft
+ * Freeform for Craft.
  *
- * @package       Solspace:Freeform
  * @author        Solspace, Inc.
  * @copyright     Copyright (c) 2008-2016, Solspace, Inc.
- * @link          https://solspace.com/craft/freeform
+ *
+ * @see          https://solspace.com/craft/freeform
+ *
  * @license       https://solspace.com/software/license-agreement
  */
 
@@ -15,14 +16,9 @@ class StringHelper
 {
     /**
      * Replaces all of "{someKey}" occurrences in $string
-     * with their respective value counterparts from $values array
-     *
-     * @param string $string
-     * @param array  $values
-     *
-     * @return string
+     * with their respective value counterparts from $values array.
      */
-    public static function replaceValues($string, $values): string
+    public static function replaceValues(string $string, array $values): string
     {
         foreach (self::flattenArrayValues($values) as $key => $value) {
             $string = (string) preg_replace("/\{$key\}/", $value, $string);
@@ -31,11 +27,6 @@ class StringHelper
         return $string;
     }
 
-    /**
-     * @param array $values
-     *
-     * @return array
-     */
     public static function flattenArrayValues(array $values): array
     {
         $return = [];
@@ -52,28 +43,19 @@ class StringHelper
     }
 
     /**
-     * Splits an underscored of camelcased string into separate words
-     *
-     * @param string $string
-     *
-     * @return string
+     * Splits an underscored of camelcased string into separate words.
      */
-    public static function humanize($string): string
+    public static function humanize(string $string): string
     {
-        $string = strtolower(trim(preg_replace(['/([A-Z])/', "/[_\\s]+/"], ['_$1', ' '], $string)));
+        $string = strtolower(trim(preg_replace(['/([A-Z])/', '/[_\\s]+/'], ['_$1', ' '], $string)));
 
         return $string;
     }
 
     /**
-     * Turns every first letter in every word in the string into a camel cased letter
-     *
-     * @param string $string
-     * @param string $delimiter
-     *
-     * @return string
+     * Turns every first letter in every word in the string into a camel cased letter.
      */
-    public static function camelize($string, $delimiter = ' '): string
+    public static function camelize(string $string, string $delimiter = ' '): string
     {
         $stringParts = explode($delimiter, $string);
         $camelized = array_map('ucwords', $stringParts);
@@ -82,11 +64,7 @@ class StringHelper
     }
 
     /**
-     * Walk through the array and create an HTML tag attribute string
-     *
-     * @param array $array
-     *
-     * @return string
+     * Walk through the array and create an HTML tag attribute string.
      */
     public static function compileAttributeStringFromArray(array $array): string
     {
@@ -94,22 +72,18 @@ class StringHelper
 
         foreach ($array as $key => $value) {
             if (null === $value || (\is_bool($value) && $value)) {
-                $attributeString .= "$key ";
-            } else if (!\is_bool($value)) {
-                $attributeString .= "$key=\"$value\" ";
+                $attributeString .= " $key";
+            } elseif (!\is_bool($value)) {
+                $attributeString .= " $key=\"$value\"";
             }
         }
 
-        return $attributeString ? ' ' . $attributeString : '';
+        return $attributeString ? $attributeString : '';
     }
 
     /**
      * Takes any items separated by a whitespace or any of the following `|,;` in a string
-     * And returns an array of the items
-     *
-     * @param string $string
-     *
-     * @return array
+     * And returns an array of the items.
      */
     public static function extractSeparatedValues(string $string): array
     {
@@ -129,15 +103,15 @@ class StringHelper
      *
      * @return string
      */
-    public static function implodeRecursively($glue, $data): string
+    public static function implodeRecursively(string $glue, $data): string
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             return $data;
         }
 
         $pieces = [];
         foreach ($data as $item) {
-            if (is_array($item)) {
+            if (\is_array($item)) {
                 $pieces[] = self::implodeRecursively($glue, $item);
             } else {
                 $pieces[] = $item;

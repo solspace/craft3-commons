@@ -10,15 +10,15 @@ namespace Configurations;
 
 use PHPUnit\Framework\TestCase;
 use Solspace\Commons\Configurations\BaseConfiguration;
+use Solspace\Commons\Exceptions\Configurations\ConfigurationException;
 
 class BaseConfigurationTest extends TestCase
 {
-    /**
-     * @expectedException Solspace\Commons\Exceptions\Configurations\ConfigurationException
-     * @expectedExceptionMessage Configuration property "random" does not exist. Available properties are: "int, string, array, bool"
-     */
     public function testForInexistingProperties()
     {
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Configuration property "random" does not exist. Available properties are: "int, string, array, bool"');
+
         new TestConfig(['random' => 'value']);
     }
 

@@ -20,8 +20,8 @@ class Field
      */
     public function __construct(string $name, ColumnSchemaBuilder $definition)
     {
-        $this->name          = $name;
-        $this->definition    = $definition;
+        $this->name = $name;
+        $this->definition = $definition;
     }
 
     /**
