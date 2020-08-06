@@ -66,3 +66,5 @@ fabric.properties
 .idea/modules.xml
 .idea/vcs.xml
 .idea/webResources.xml
+
+vendor/
