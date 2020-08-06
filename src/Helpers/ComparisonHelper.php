@@ -12,7 +12,7 @@ class ComparisonHelper
      */
     public static function stringContainsWildcardKeyword(string $pattern, string $string): bool
     {
-        $pattern = '#\b' . self::wildcardToRegex($pattern) . '\b#i';
+        $pattern = '#\b' . self::wildcardToRegex($pattern) . '\b#iu';
 
         return (bool) preg_match($pattern, $string);
     }
@@ -25,7 +25,7 @@ class ComparisonHelper
      */
     public static function stringMatchesWildcard(string $wildcardPattern, string $string): bool
     {
-        $pattern = '#^' . self::wildcardToRegex($wildcardPattern). '$#i';
+        $pattern = '#^' . self::wildcardToRegex($wildcardPattern). '$#iu';
 
         return (bool) preg_match($pattern, $string);
     }
