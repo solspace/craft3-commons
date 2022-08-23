@@ -13,12 +13,13 @@ class ComparisonHelper
     public static function stringContainsWildcardKeyword(string $pattern, string $string): bool
     {
         if (strpos($pattern, '"') !== false) {
-            return (stripos($pattern, $string) !== false);
+            // The double quotes becomes the delimiters
+            $pattern = self::wildcardToRegex($pattern) . 'i';
         } else {
             $pattern = '#\b' . self::wildcardToRegex($pattern) . '\b#i';
-
-            return (bool) preg_match($pattern, $string);
         }
+
+        return (bool) preg_match($pattern, $string);
     }
 
     /**
