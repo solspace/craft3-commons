@@ -13,7 +13,7 @@ class ComparisonHelper
     public static function stringContainsWildcardKeyword(string $pattern, string $string): bool
     {
         if (strpos($pattern, '"') !== false) {
-            return (stripos(strtolower($pattern), $string) !== false);
+            return (stripos($pattern, $string) !== false);
         } else {
             $pattern = '#\b' . self::wildcardToRegex($pattern) . '\b#i';
 
@@ -43,8 +43,7 @@ class ComparisonHelper
     private static function wildcardToRegex(string $wildcardPattern, string $delimiter = '/'): string
     {
         $converted = preg_quote($wildcardPattern, $delimiter);
-        $converted = str_replace('\*', '.*', $converted);
-        $converted = str_replace('\+', '\+?', $converted);
+        $converted = str_replace(['\*', '\+'], ['.*', '\+?'], $converted);
 
         return $converted;
     }
