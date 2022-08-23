@@ -12,9 +12,13 @@ class ComparisonHelper
      */
     public static function stringContainsWildcardKeyword(string $pattern, string $string): bool
     {
-        $pattern = '#\b' . self::wildcardToRegex($pattern) . '\b#i';
+        if (strpos($pattern, '"') !== false) {
+            return (stripos(strtolower($pattern), $string) !== false);
+        } else {
+            $pattern = '#\b' . self::wildcardToRegex($pattern) . '\b#i';
 
-        return (bool) preg_match($pattern, $string);
+            return (bool) preg_match($pattern, $string);
+        }
     }
 
     /**
@@ -40,6 +44,7 @@ class ComparisonHelper
     {
         $converted = preg_quote($wildcardPattern, $delimiter);
         $converted = str_replace('\*', '.*', $converted);
+        $converted = str_replace('\+', '\+?', $converted);
 
         return $converted;
     }

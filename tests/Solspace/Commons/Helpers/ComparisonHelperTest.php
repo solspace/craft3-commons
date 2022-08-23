@@ -26,6 +26,16 @@ class ComparisonHelperTest extends TestCase
             ['some@*.com', 'some@gmail.ru', false],
             ['[some@*.com', '[some@gmail.com', false],
             ['[some@*.com', 'some@gmail.com', false],
+            ['"Beautiful girls"', 'Beautiful', true],
+            ['"Beautiful girls"', 'girls', true],
+            ['"Beautiful girls"', 'Beautiful girls', true],
+            ['*@mail.me', 'some@mail.me', true],
+            ['some@*.me', 'some@mail.me', true],
+            ['some@mail.*', 'some@mail.me', true],
+            ['+974', '974', true],
+            ['+974', '+974', true],
+            ['b*brides', 'bestbrides', true],
+            ['*charming*', 'charmingdate', true],
         ];
     }
 
