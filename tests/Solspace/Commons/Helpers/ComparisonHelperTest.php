@@ -30,7 +30,6 @@ class ComparisonHelperTest extends TestCase
             ['"Beautiful girls"', 'girls', false],
             ['"Beautiful girls"', 'beautiful girls', true],
             ['"Beautiful girls"', 'flowers are beautiful', false],
-            ['"Beautiful girls"', 'beautiful girls', true],
             ['"Beautiful girls"', 'too many beautiful girls', true],
             ['"Beautiful girls"', 'are there any beautiful girls in here', true],
             ['*@mail.me', 'some@mail.me', true],
