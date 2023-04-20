@@ -91,9 +91,9 @@ class StringHelperTest extends TestCase
 
     public function testIsTwigValue()
     {
-        $this->assertSame(false, StringHelper::isTwigValue(''));
-        $this->assertSame(false, StringHelper::isTwigValue('12345'));
-        $this->assertSame(true, StringHelper::isTwigValue('{{ fieldHandle.value }}'));
-        $this->assertSame(true, StringHelper::isTwigValue('{{ submission.fieldhandle.value }}'));
+        $this->assertFalse(StringHelper::isTwigValue(''));
+        $this->assertFalse(StringHelper::isTwigValue('12345'));
+        $this->assertTrue(StringHelper::isTwigValue('{{ fieldHandle.value }}'));
+        $this->assertTrue(StringHelper::isTwigValue('{{ submission.fieldhandle.value }}'));
     }
 }
