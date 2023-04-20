@@ -2,7 +2,7 @@
 
 namespace Solspace\Commons\Exceptions;
 
-use yii\db\Exception;
+use Exception;
 
 class BaseException extends Exception
 {

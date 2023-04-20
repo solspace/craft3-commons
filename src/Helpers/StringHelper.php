@@ -120,4 +120,9 @@ class StringHelper
 
         return implode($glue, $pieces);
     }
+
+    public static function isTwigValue($value): bool
+    {
+        return preg_match("/({{\\s.*\\s*}}\n?)/", $value);
+    }
 }
