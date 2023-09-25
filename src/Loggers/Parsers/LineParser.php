@@ -4,7 +4,7 @@ namespace Solspace\Commons\Loggers\Parsers;
 
 class LineParser implements LogParserInterface
 {
-    private $pattern = '/\[(?P<date>.*)\] (?P<logger>[\w _\-]+).(?P<level>\w+): (?P<message>.*+)/';
+    private $pattern = '/\[(?P<date>.*)\] (?P<logger>[\w ._\-]+).(?P<level>\w+): (?P<message>.*+)/';
 
     /**
      * LineParser constructor.
